@@ -9,15 +9,15 @@ import io.netty.handler.codec.http.HttpMessage;
 import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.util.ReferenceCountUtil;
 
-public class SimpleChannelFactory implements Factory<Void, SimpleChannelInboundHandler<HttpMessage>> {
+public class SimpleChannelFactory implements Factory<Integer, SimpleChannelInboundHandler<HttpMessage>> {
     @Override
-    public SimpleChannelInboundHandler<HttpMessage> create(Void input) {
+    public SimpleChannelInboundHandler<HttpMessage> create(Integer maxContentLength) {
         return new SimpleChannelInboundHandler<>() {
             @Override
             protected void channelRead0(ChannelHandlerContext ctx, HttpMessage msg) throws Exception {
                 ChannelPipeline pipeline = ctx.pipeline();
                 pipeline.addAfter(ctx.name(), null, new RequestHTTPServerHandler());
-                pipeline.replace(this, null, new HttpObjectAggregator(1024 * 1024));
+                pipeline.replace(this, null, new HttpObjectAggregator(maxContentLength));
                 ctx.fireChannelRead(ReferenceCountUtil.retain(msg));
             }
         };

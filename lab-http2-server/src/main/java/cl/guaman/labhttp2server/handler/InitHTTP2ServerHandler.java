@@ -4,21 +4,18 @@ import cl.guaman.labhttp2server.builder.HTTP2ServerBuilder;
 import cl.guaman.labhttp2server.factory.Factory;
 import cl.guaman.labhttp2server.factory.impl.SimpleChannelFactory;
 import cl.guaman.labhttp2server.factory.impl.UpgradeCodecFFactory;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.handler.codec.http.HttpMessage;
-import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.HttpServerUpgradeHandler;
-import io.netty.util.ReferenceCountUtil;
 
 public class InitHTTP2ServerHandler extends ChannelInitializer<SocketChannel> {
     private final HTTP2ServerBuilder builder;
     protected final Factory<Void, HttpServerUpgradeHandler.UpgradeCodecFactory> upgradeCodecFFactory = new UpgradeCodecFFactory();
-    protected final Factory<Void, SimpleChannelInboundHandler<HttpMessage>> simpleChannelFactory = new SimpleChannelFactory();
+    protected final Factory<Integer, SimpleChannelInboundHandler<HttpMessage>> simpleChannelFactory = new SimpleChannelFactory();
 
     public InitHTTP2ServerHandler(HTTP2ServerBuilder builder) {
         this.builder = builder;
@@ -35,6 +32,6 @@ public class InitHTTP2ServerHandler extends ChannelInitializer<SocketChannel> {
         HttpServerCodec httpServerCodec = new HttpServerCodec();
         pipeline.addLast(httpServerCodec);
         pipeline.addLast(new HttpServerUpgradeHandler(httpServerCodec, upgradeCodecFFactory.create()));
-        pipeline.addLast(simpleChannelFactory.create());
+        pipeline.addLast(simpleChannelFactory.create(builder.getMaxContentLength()));
     }
 }

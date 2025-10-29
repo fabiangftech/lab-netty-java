@@ -12,18 +12,20 @@ public class HTTP2ServerBuilder {
     private final Factory<Void, Class<? extends ServerChannel>> serverSocketChannelFactory = new ServerSocketChannelFactory();
 
     private int port = 8080;
+    private int maxContentLength = 1024 * 256;
 
     public HTTP2ServerBuilder port(int port) {
         this.port = port;
         return this;
     }
 
-    public HTTP2Server build() {
-        return new HTTP2Server(this);
+    public HTTP2ServerBuilder maxContentLength(int maxContentLength) {
+        this.maxContentLength = maxContentLength;
+        return this;
     }
 
-    public int getPort() {
-        return port;
+    public HTTP2Server build() {
+        return new HTTP2Server(this);
     }
 
     public Factory<Integer, EventLoopGroup> getEventLoopGroupFactory() {
@@ -32,5 +34,13 @@ public class HTTP2ServerBuilder {
 
     public Factory<Void, Class<? extends ServerChannel>> getServerSocketChannelFactory() {
         return serverSocketChannelFactory;
+    }
+
+    public int getPort() {
+        return port;
+    }
+
+    public int getMaxContentLength() {
+        return maxContentLength;
     }
 }
