@@ -146,8 +146,6 @@ public class RadixRouter<T> {
         return null;
     }
 
-    /* -------------------- Helpers -------------------- */
-
     private static String normalize(String path) {
         if (path.isEmpty()) return "/";
         String p = path;
