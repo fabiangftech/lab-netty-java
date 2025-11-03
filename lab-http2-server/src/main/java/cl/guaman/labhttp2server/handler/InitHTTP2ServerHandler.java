@@ -15,10 +15,11 @@ import io.netty.handler.codec.http.HttpServerUpgradeHandler;
 public class InitHTTP2ServerHandler extends ChannelInitializer<SocketChannel> {
     private final HTTP2ServerBuilder builder;
     protected final Factory<Void, HttpServerUpgradeHandler.UpgradeCodecFactory> upgradeCodecFFactory = new UpgradeCodecFFactory();
-    protected final Factory<Integer, SimpleChannelInboundHandler<HttpMessage>> simpleChannelFactory = new SimpleChannelFactory();
+    protected final Factory<Integer, SimpleChannelInboundHandler<HttpMessage>> simpleChannelFactory;
 
     public InitHTTP2ServerHandler(HTTP2ServerBuilder builder) {
         this.builder = builder;
+        this.simpleChannelFactory = new SimpleChannelFactory(builder.getRouter());
     }
 
     @Override

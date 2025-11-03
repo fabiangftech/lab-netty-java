@@ -10,13 +10,11 @@ public class Main {
         try (HTTP2Server server = HTTP2Server.builder()
                 .port(8080)
                 .maxContentLength(1024 * 1024)
-                .GET("/health", ()->{
-                    return HTTPResponse.builder()
-                            .status(200)
-                            .header("Content-Type", "text/plain")
-                            .body("LIVE".getBytes(StandardCharsets.UTF_8))
-                            .build()
-                })
+                .GET("/", ()-> HTTPResponse.builder()
+                        .status(200)
+                        .header("Content-Type", "text/plain")
+                        .body("lab-http2-server".getBytes(StandardCharsets.UTF_8))
+                        .build())
                 .build()) {
             server.start();
         } catch (InterruptedException e) {

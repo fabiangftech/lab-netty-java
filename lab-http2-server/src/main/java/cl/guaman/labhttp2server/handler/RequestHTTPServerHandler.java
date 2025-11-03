@@ -1,5 +1,7 @@
 package cl.guaman.labhttp2server.handler;
 
+import cl.guaman.labhttp2server.controller.HTTPController;
+import cl.guaman.labhttp2server.model.RadixRouter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -20,7 +22,11 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_0;
 import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 public class RequestHTTPServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
-    public RequestHTTPServerHandler() {
+
+    private final RadixRouter<HTTPController> router;
+
+    public RequestHTTPServerHandler(RadixRouter<HTTPController> router) {
+        this.router = router;
     }
 
     @Override
@@ -32,7 +38,6 @@ public class RequestHTTPServerHandler extends SimpleChannelInboundHandler<FullHt
         ByteBuf content = ctx.alloc().buffer();
         content.writeBytes(RequestHTTP2ServerHandler.RESPONSE_BYTES.duplicate());
         ByteBufUtil.writeAscii(content, " - via " + req.protocolVersion());
-
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, OK, content);
         response.headers().set(CONTENT_TYPE, "text/plain; charset=UTF-8");
         response.headers().setInt(CONTENT_LENGTH, response.content().readableBytes());
