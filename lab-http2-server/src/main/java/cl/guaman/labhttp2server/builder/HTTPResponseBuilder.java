@@ -18,6 +18,11 @@ public class HTTPResponseBuilder {
         return this;
     }
 
+    public HTTPResponseBuilder ok() {
+        this.status = 200;
+        return this;
+    }
+
     public HTTPResponseBuilder header(String key, String value) {
         this.headers.put(key, value);
         return this;

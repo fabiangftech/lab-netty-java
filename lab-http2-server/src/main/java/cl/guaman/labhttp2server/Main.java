@@ -11,7 +11,7 @@ public class Main {
                 .port(8080)
                 .maxContentLength(1024 * 1024)
                 .GET("/", ()-> HTTPResponse.builder()
-                        .status(200)
+                        .ok()
                         .header("Content-Type", "text/plain")
                         .body("lab-http2-server".getBytes(StandardCharsets.UTF_8))
                         .build())
