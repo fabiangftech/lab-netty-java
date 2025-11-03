@@ -11,18 +11,18 @@ public class HTTPRequest {
     private final HTTPVersion version;
     private HttpHeaders headers;
     private Http2Headers http2Headers;
-    private final byte[] body;
+    private final ByteBuf body;
 
     public HTTPRequest(FullHttpRequest fullHttpRequest) {
         this.version = HTTPVersion.V1_1;
         this.headers = fullHttpRequest.headers();
-        this.body = fullHttpRequest.content().array();
+        this.body = fullHttpRequest.content();
     }
 
     public HTTPRequest(Http2HeadersFrame headersFrame, ByteBuf body) {
         this.version = HTTPVersion.V2_0;
         this.http2Headers = headersFrame.headers();
-        this.body = body.array();
+        this.body = body;
     }
 
     public String getHeader(String key) {
@@ -34,7 +34,7 @@ public class HTTPRequest {
         throw new IllegalArgumentException(String.format("version not supported %s", version));
     }
 
-    public byte[] getBody() {
+    public ByteBuf getBody() {
         return body;
     }
 }
