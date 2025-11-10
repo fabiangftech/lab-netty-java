@@ -45,7 +45,17 @@ public class HTTP2ServerBuilder {
         return this;
     }
 
+    public HTTP2ServerBuilder POST(String path, WithParamController controller) {
+        router.add(HttpMethod.POST, path, controller);
+        return this;
+    }
+
     public HTTP2ServerBuilder PUT(String path, NoParamController controller) {
+        router.add(HttpMethod.PUT, path, controller);
+        return this;
+    }
+
+    public HTTP2ServerBuilder PUT(String path, WithParamController controller) {
         router.add(HttpMethod.PUT, path, controller);
         return this;
     }
@@ -55,12 +65,27 @@ public class HTTP2ServerBuilder {
         return this;
     }
 
+    public HTTP2ServerBuilder PATCH(String path, WithParamController controller) {
+        router.add(HttpMethod.PATCH, path, controller);
+        return this;
+    }
+
     public HTTP2ServerBuilder DELETE(String path, NoParamController controller) {
         router.add(HttpMethod.DELETE, path, controller);
         return this;
     }
 
+    public HTTP2ServerBuilder DELETE(String path, WithParamController controller) {
+        router.add(HttpMethod.DELETE, path, controller);
+        return this;
+    }
+
     public HTTP2ServerBuilder HEAD(String path, NoParamController controller) {
+        router.add(HttpMethod.HEAD, path, controller);
+        return this;
+    }
+
+    public HTTP2ServerBuilder HEAD(String path, WithParamController controller) {
         router.add(HttpMethod.HEAD, path, controller);
         return this;
     }
