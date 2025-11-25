@@ -1,7 +1,6 @@
 package cl.guaman.labhttp2server.handler;
 
 import cl.guaman.labhttp2server.controller.HTTPController;
-import cl.guaman.labhttp2server.model.RadixRouter;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufUtil;
 import io.netty.buffer.Unpooled;
@@ -23,10 +22,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 
 public class RequestHTTPServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
-    private final RadixRouter<HTTPController> router;
-
-    public RequestHTTPServerHandler(RadixRouter<HTTPController> router) {
-        this.router = router;
+    public RequestHTTPServerHandler() {
     }
 
     @Override

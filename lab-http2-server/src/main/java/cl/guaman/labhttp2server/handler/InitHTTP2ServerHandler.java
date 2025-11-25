@@ -19,7 +19,7 @@ public class InitHTTP2ServerHandler extends ChannelInitializer<SocketChannel> {
 
     public InitHTTP2ServerHandler(HTTP2ServerBuilder builder) {
         this.builder = builder;
-        this.simpleChannelFactory = new SimpleChannelFactory(builder.getRouter());
+        this.simpleChannelFactory = new SimpleChannelFactory();
     }
 
     @Override
