@@ -25,16 +25,15 @@ public class ProductChangeService {
                 .changeStream(Product.class)
                 .watchCollection("product")
                 .listen()
-                .doOnNext(change -> log.info(Objects.requireNonNull(change.getBody()).toString()))
+                .doOnNext(change -> {
+                    log.info("operation = {}",change.getOperationType());
+                    log.info("change before = {}",change.getBodyBeforeChange());
+                    log.info("change = {}",change.getBody());
+                })
                 .doOnSubscribe(subscription -> 
                     log.info("Starting to watch product collection changes..."))
                 .doOnCancel(() -> 
                     log.warn("Product change stream subscription was cancelled"))
-                .subscribe(
-                    null,
-                    error -> {
-                        log.error("Subscription error in product change stream: {}", error.getMessage(), error);
-                    }
-                );
+                .subscribe();
     }
 }
