@@ -4,3 +4,4 @@ dist
 out
 .gradle
 build
+application-local.yml

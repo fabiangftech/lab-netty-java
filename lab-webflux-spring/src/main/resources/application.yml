@@ -2,6 +2,9 @@ spring:
   application:
     name: lab-webflux-spring
   mongodb:
-    uri: mongodb://localhost:27017/reactivedb
-    username: admin
-    password: admin123
+    authentication-database: admin
+    database: ???
+    password: ???
+    username: ???
+    port: 27017
+    host: ???
