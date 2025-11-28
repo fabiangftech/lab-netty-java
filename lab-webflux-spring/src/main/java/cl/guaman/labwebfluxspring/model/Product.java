@@ -1,4 +1,4 @@
-package software.amazon.awssdk.http.all.netty.labwebfluxspring.model;
+package cl.guaman.labwebfluxspring.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

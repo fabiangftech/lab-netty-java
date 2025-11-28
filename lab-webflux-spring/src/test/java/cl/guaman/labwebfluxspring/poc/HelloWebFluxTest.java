@@ -1,4 +1,4 @@
-package software.amazon.awssdk.http.all.netty.labwebfluxspring.poc;
+package cl.guaman.labwebfluxspring.poc;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;

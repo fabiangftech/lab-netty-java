@@ -1,12 +1,12 @@
-package software.amazon.awssdk.http.all.netty.labwebfluxspring.config;
+package cl.guaman.labwebfluxspring.config;
 
+import cl.guaman.labwebfluxspring.repository.ProductRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import reactor.core.publisher.Flux;
-import software.amazon.awssdk.http.all.netty.labwebfluxspring.model.Product;
-import software.amazon.awssdk.http.all.netty.labwebfluxspring.repository.ProductRepository;
+import cl.guaman.labwebfluxspring.model.Product;
 
 @Slf4j
 @Configuration

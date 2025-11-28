@@ -1,4 +1,4 @@
-package software.amazon.awssdk.http.all.netty.labwebfluxspring.handler.impl;
+package cl.guaman.labwebfluxspring.handler.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

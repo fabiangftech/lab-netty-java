@@ -1,4 +1,4 @@
-package software.amazon.awssdk.http.all.netty.labwebfluxspring.handler.impl;
+package cl.guaman.labwebfluxspring.handler.impl;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.server.ServerRequest;

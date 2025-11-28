@@ -1,8 +1,8 @@
-package software.amazon.awssdk.http.all.netty.labwebfluxspring.repository;
+package cl.guaman.labwebfluxspring.repository;
 
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 import reactor.core.publisher.Flux;
-import software.amazon.awssdk.http.all.netty.labwebfluxspring.model.Product;
+import cl.guaman.labwebfluxspring.model.Product;
 
 public interface ProductRepository extends ReactiveMongoRepository<Product, String> {
 
