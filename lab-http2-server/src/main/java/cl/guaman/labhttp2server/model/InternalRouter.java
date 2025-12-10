@@ -1,5 +1,6 @@
 package cl.guaman.labhttp2server.model;
 
+import cl.guaman.labhttp2server.handler.ControllerHandler;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.util.AsciiString;
 
@@ -14,12 +15,7 @@ public class InternalRouter {
     private static final String NAME_WILDCARD = "wildcard";
     private static final char COLON = ':';
 
-    @FunctionalInterface
-    public interface Handler {
-        void handle();
-    }
-
-    public record Match(HttpMethod method, Handler handler, Map<String, String> pathParams) {
+    public record Match(HttpMethod method, ControllerHandler handler, Map<String, String> pathParams) {
 
     }
 
@@ -30,17 +26,17 @@ public class InternalRouter {
         private Node wildcardChild;
         private String wildcardName;
 
-        private final Map<HttpMethod, Handler> handlersByMethod = new HashMap<>();
+        private final Map<HttpMethod, ControllerHandler> handlersByMethod = new HashMap<>();
         private final Map<HttpMethod, Integer> prioritiesByMethod = new HashMap<>();
     }
 
     private final Node root = new Node();
 
-    public void add(HttpMethod method, String path, Handler handler) {
+    public void add(HttpMethod method, String path, ControllerHandler handler) {
         add(method, path, handler, 0);
     }
 
-    public void add(HttpMethod method, String path, Handler handler, int priority) {
+    public void add(HttpMethod method, String path, ControllerHandler handler, int priority) {
         if (method == null) {
             throw new IllegalArgumentException("HttpMethod cannot be null");
         }
@@ -96,7 +92,7 @@ public class InternalRouter {
             }
         }
 
-        Handler existing = node.handlersByMethod.get(method);
+        ControllerHandler existing = node.handlersByMethod.get(method);
         Integer existingPrio = node.prioritiesByMethod.get(method);
         if (existing != null && existingPrio != null && existingPrio >= priority) {
             throw new IllegalStateException(
@@ -145,7 +141,7 @@ public class InternalRouter {
 
         while (true) {
             if (offset >= len) {
-                Handler handler = node.handlersByMethod.get(method);
+                ControllerHandler handler = node.handlersByMethod.get(method);
                 if (handler != null) {
                     return new Match(method, handler, params);
                 }
@@ -169,7 +165,7 @@ public class InternalRouter {
             } else if (node.wildcardChild != null) {
                 String rest = normalized.substring(offset);
                 params.put(node.wildcardChild.wildcardName, rest.startsWith(FORWARD_SLASH_STR) ? rest.substring(1) : rest);
-                Handler handler = node.wildcardChild.handlersByMethod.get(method);
+                ControllerHandler handler = node.wildcardChild.handlersByMethod.get(method);
                 if (handler != null) {
                     return new Match(method, handler, params);
                 }

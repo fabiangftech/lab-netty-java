@@ -23,6 +23,7 @@ import static io.netty.handler.codec.http.HttpVersion.HTTP_1_1;
 public class RequestHTTPServerHandler extends SimpleChannelInboundHandler<FullHttpRequest> {
 
     public RequestHTTPServerHandler() {
+        // do nothing
     }
 
     @Override
