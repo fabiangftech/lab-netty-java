@@ -25,7 +25,7 @@ public class HTTPRequest {
         QueryStringDecoder decoder = new QueryStringDecoder(this.uri);
         this.path = decoder.path();
         this.queryParameters = decoder.parameters();
-        this.headers = new Http1HeaderAccessor(fullHttpRequest.headers());
+        this.headers = new HTTPHeaderAccessor(fullHttpRequest.headers());
         this.body = fullHttpRequest.content().retain();
     }
 
@@ -38,7 +38,7 @@ public class HTTPRequest {
         QueryStringDecoder decoder = new QueryStringDecoder(this.uri);
         this.path = decoder.path();
         this.queryParameters = decoder.parameters();
-        this.headers = new Http2HeaderAccessor(headersFrame.headers());
+        this.headers = new HTTP2HeaderAccessor(headersFrame.headers());
         this.body = body.retain();
     }
 

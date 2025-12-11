@@ -4,5 +4,6 @@ dist
 out
 .gradle
 build
+bin
 application-local.yml
 scripts/mongodb-keyfile

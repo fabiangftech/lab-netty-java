@@ -2,9 +2,9 @@ package cl.guaman.labhttp2server.model;
 
 import io.netty.handler.codec.http2.Http2Headers;
 
-public class Http2HeaderAccessor implements HeaderAccessor {
+public class HTTP2HeaderAccessor implements HeaderAccessor {
     private final Http2Headers headers;
-   public Http2HeaderAccessor(Http2Headers headers) { this.headers = headers; }
+   public HTTP2HeaderAccessor(Http2Headers headers) { this.headers = headers; }
 
     @Override
     public String get(String key) {

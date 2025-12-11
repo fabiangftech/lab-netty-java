@@ -5,6 +5,7 @@ import cl.guaman.labhttp2server.facade.Server;
 import cl.guaman.labhttp2server.handler.InitHTTP2ServerHandler;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.Channel;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
@@ -27,6 +28,10 @@ public class HTTP2Server implements Server, AutoCloseable {
     public void start() throws InterruptedException {
         logger.info("start http2-server");
         ServerBootstrap serverBootstrap = new ServerBootstrap();
+        serverBootstrap.option(ChannelOption.SO_BACKLOG, this.builder.getSoBacklog());
+        serverBootstrap.option(ChannelOption.SO_KEEPALIVE, this.builder.isSoKeepALive());
+        serverBootstrap.option(ChannelOption.AUTO_READ, this.builder.isAutoRead());
+        serverBootstrap.option(ChannelOption.SO_REUSEADDR, true);
         serverBootstrap.group(bossEventLoopGroup, workerEventLoopGroup)
                 .channel(this.builder.getServerSocketChannelFactory().create())
                 .handler(new LoggingHandler(LogLevel.INFO))

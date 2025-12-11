@@ -16,6 +16,9 @@ public class HTTP2ServerBuilder {
     private final Factory<Void, Class<? extends ServerChannel>> serverSocketChannelFactory = new ServerSocketChannelFactory();
     private int port = 8080;
     private int maxContentLength = 1024 * 256;
+    private int soBacklog = 4096;
+    private boolean soKeepALive = true;
+    private boolean autoRead = true;
 
     public HTTP2ServerBuilder port(int port) {
         this.port = port;
@@ -24,6 +27,21 @@ public class HTTP2ServerBuilder {
 
     public HTTP2ServerBuilder maxContentLength(int maxContentLength) {
         this.maxContentLength = maxContentLength;
+        return this;
+    }
+
+    public HTTP2ServerBuilder soBacklog(int soBacklog) {
+        this.soBacklog = soBacklog;
+        return this;
+    }
+
+    public HTTP2ServerBuilder soKeepALive(boolean soKeepALive) {
+        this.soKeepALive = soKeepALive;
+        return this;
+    }
+
+    public HTTP2ServerBuilder autoRead(boolean autoRead) {
+        this.autoRead = autoRead;
         return this;
     }
 
@@ -106,5 +124,17 @@ public class HTTP2ServerBuilder {
 
     public int getMaxContentLength() {
         return maxContentLength;
+    }
+
+    public int getSoBacklog() {
+        return soBacklog;
+    }
+
+    public boolean isSoKeepALive() {
+        return soKeepALive;
+    }
+
+    public boolean isAutoRead() {
+        return autoRead;
     }
 }

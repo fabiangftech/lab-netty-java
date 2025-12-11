@@ -1,6 +1,6 @@
 package cl.guaman.labhttp2server.model;
 
-import cl.guaman.labhttp2server.handler.ControllerHandler;
+import cl.guaman.labhttp2server.controller.WithParamController;
 import io.netty.handler.codec.http.HttpMethod;
 import org.junit.jupiter.api.Test;
 
@@ -14,9 +14,9 @@ class InternalRouterTest {
      void testGetRoutesWithParams() {
          InternalRouter router = new InternalRouter();
 
-         ControllerHandler path1Handler = request -> HTTPResponse.builder().build();
-         ControllerHandler path1IdHandler = request -> HTTPResponse.builder().build();
-         ControllerHandler path1IdPath2Handler = request -> HTTPResponse.builder().build();
+         WithParamController path1Handler = request -> HTTPResponse.builder().build();
+         WithParamController path1IdHandler = request -> HTTPResponse.builder().build();
+         WithParamController path1IdPath2Handler = request -> HTTPResponse.builder().build();
 
          router.add(HttpMethod.GET, "/path-1", path1Handler);
          router.add(HttpMethod.GET, "/path-1/:id", path1IdHandler);
@@ -51,8 +51,8 @@ class InternalRouterTest {
      void testDifferentMethodsSamePath() {
          InternalRouter router = new InternalRouter();
 
-         ControllerHandler handler = request -> HTTPResponse.builder().build();
-         ControllerHandler postHandler = request -> HTTPResponse.builder().build();
+         WithParamController handler = request -> HTTPResponse.builder().build();
+         WithParamController postHandler = request -> HTTPResponse.builder().build();
 
          router.add(HttpMethod.GET, "/resource", handler);
          router.add(HttpMethod.POST, "/resource", postHandler);
@@ -71,7 +71,7 @@ class InternalRouterTest {
      @Test
      void testWildcardRoute() {
          InternalRouter router = new InternalRouter();
-         ControllerHandler filesHandler = request -> HTTPResponse.builder().build();
+         WithParamController filesHandler = request -> HTTPResponse.builder().build();
          router.add(HttpMethod.GET, "/files/*path", filesHandler);
 
          InternalRouter.Match m1 = router.match(HttpMethod.GET, "/files/a/b/c.txt");
@@ -88,7 +88,7 @@ class InternalRouterTest {
      @Test
      void testNoMatch() {
          InternalRouter router = new InternalRouter();
-         ControllerHandler handler = request -> HTTPResponse.builder().build();
+         WithParamController handler = request -> HTTPResponse.builder().build();
 
          router.add(HttpMethod.GET, "/path-1/:id/path2", handler);
 
@@ -100,8 +100,8 @@ class InternalRouterTest {
      @Test
      void testConflictingParamsSameLevelThrows() {
          InternalRouter router = new InternalRouter();
-         ControllerHandler h1 = request -> HTTPResponse.builder().build();
-         ControllerHandler h2 = request -> HTTPResponse.builder().build();
+         WithParamController h1 = request -> HTTPResponse.builder().build();
+         WithParamController h2 = request -> HTTPResponse.builder().build();
 
          router.add(HttpMethod.GET, "/users/:id", h1);
 
@@ -114,7 +114,7 @@ class InternalRouterTest {
      void testWildcardMustBeLastSegment() {
          InternalRouter router = new InternalRouter();
 
-         ControllerHandler h1 = request -> HTTPResponse.builder().build();
+         WithParamController h1 = request -> HTTPResponse.builder().build();
 
          assertThrows(IllegalArgumentException.class, () ->
                  router.add(HttpMethod.GET, "/files/*path/extra", h1)

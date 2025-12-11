@@ -2,10 +2,10 @@ package cl.guaman.labhttp2server.model;
 
 import io.netty.handler.codec.http.HttpHeaders;
 
-public class Http1HeaderAccessor implements HeaderAccessor {
+public class HTTPHeaderAccessor implements HeaderAccessor {
     private final HttpHeaders headers;
 
-    public Http1HeaderAccessor(HttpHeaders headers) {
+    public HTTPHeaderAccessor(HttpHeaders headers) {
         this.headers = headers;
     }
 
