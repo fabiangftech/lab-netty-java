@@ -12,7 +12,7 @@ public class Main {
                 .maxContentLength(1024 * 1024)
                 .GET("/", ()-> HTTPResponse.builder()
                         .ok()
-                        .header("Content-Type", "text/plain")
+                        .setContentTypeTextPlain()
                         .body("lab-http2-server".getBytes(StandardCharsets.UTF_8))
                         .build())
                 .build()) {

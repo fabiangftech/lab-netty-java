@@ -6,6 +6,10 @@ import java.util.Map;
 
 public class HTTPResponseBuilder {
 
+    private static final String CONTENT_TYPE ="Content-Type";
+    private static final String TEXT_PLAIN ="text/plain";
+    private static final String APPLICATION_JSON ="application/json";
+
     private int status;
     private Map<String, String> headers;
     private byte[] body;
@@ -25,6 +29,16 @@ public class HTTPResponseBuilder {
 
     public HTTPResponseBuilder header(String key, String value) {
         this.headers.put(key, value);
+        return this;
+    }
+
+    public HTTPResponseBuilder setContentTypeTextPlain() {
+        this.headers.put(CONTENT_TYPE, TEXT_PLAIN);
+        return this;
+    }
+
+    public HTTPResponseBuilder setContentTypeApplicationJSON() {
+        this.headers.put(CONTENT_TYPE, APPLICATION_JSON);
         return this;
     }
 
