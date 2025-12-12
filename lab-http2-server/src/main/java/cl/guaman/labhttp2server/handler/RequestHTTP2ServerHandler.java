@@ -27,9 +27,18 @@ public class RequestHTTP2ServerHandler extends ChannelDuplexHandler {
     @Override
     public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
         if (msg instanceof Http2HeadersFrame http2HeadersFrame) {
-            onHeadersRead(ctx, http2HeadersFrame);
+            if (http2HeadersFrame.isEndStream()) {
+                ByteBuf content = ctx.alloc().buffer();
+                content.writeBytes(RESPONSE_BYTES.duplicate());
+                ByteBufUtil.writeAscii(content, " - via HTTP/2");
+                sendResponse(ctx, content);
+            }
         } else if (msg instanceof Http2DataFrame http2DataFrame) {
-            onDataRead(ctx, http2DataFrame);
+            if (http2DataFrame.isEndStream()) {
+                sendResponse(ctx, http2DataFrame.content());
+            } else {
+                http2DataFrame.release();
+            }
         } else {
             super.channelRead(ctx, msg);
         }
@@ -38,22 +47,8 @@ public class RequestHTTP2ServerHandler extends ChannelDuplexHandler {
     @Override
     public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
         ctx.flush();
-    }
-
-    private static void onDataRead(ChannelHandlerContext ctx, Http2DataFrame data) {
-        if (data.isEndStream()) {
-            sendResponse(ctx, data.content());
-        } else {
-            data.release();
-        }
-    }
-
-    private static void onHeadersRead(ChannelHandlerContext ctx, Http2HeadersFrame headers) {
-        if (headers.isEndStream()) {
-            ByteBuf content = ctx.alloc().buffer();
-            content.writeBytes(RESPONSE_BYTES.duplicate());
-            ByteBufUtil.writeAscii(content, " - via HTTP/2");
-            sendResponse(ctx, content);
+        if (!ctx.channel().config().isAutoRead()) {
+            ctx.read(); // request next frame when manual read is enabled
         }
     }
 

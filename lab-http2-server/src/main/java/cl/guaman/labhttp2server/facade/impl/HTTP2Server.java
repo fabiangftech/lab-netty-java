@@ -29,8 +29,8 @@ public class HTTP2Server implements Server, AutoCloseable {
         logger.info("start http2-server");
         ServerBootstrap serverBootstrap = new ServerBootstrap();
         serverBootstrap.option(ChannelOption.SO_BACKLOG, this.builder.getSoBacklog());
-        serverBootstrap.option(ChannelOption.SO_KEEPALIVE, this.builder.isSoKeepALive());
-        serverBootstrap.option(ChannelOption.AUTO_READ, this.builder.isAutoRead());
+        serverBootstrap.childOption(ChannelOption.SO_KEEPALIVE, this.builder.isSoKeepALive());
+        serverBootstrap.childOption(ChannelOption.AUTO_READ, this.builder.isAutoRead());
         serverBootstrap.option(ChannelOption.SO_REUSEADDR, true);
         serverBootstrap.group(bossEventLoopGroup, workerEventLoopGroup)
                 .channel(this.builder.getServerSocketChannelFactory().create())

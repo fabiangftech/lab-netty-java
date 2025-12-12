@@ -1,25 +1,21 @@
 package cl.guaman.labhttp2server.handler;
 
 import cl.guaman.labhttp2server.builder.HTTP2ServerBuilder;
-import cl.guaman.labhttp2server.factory.Factory;
-import cl.guaman.labhttp2server.factory.impl.SimpleChannelFactory;
-import cl.guaman.labhttp2server.factory.impl.UpgradeCodecFFactory;
+import cl.guaman.labhttp2server.factory.impl.HTTP2UpgradeCodecFactory;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
-import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.channel.socket.SocketChannel;
-import io.netty.handler.codec.http.HttpMessage;
 import io.netty.handler.codec.http.HttpServerCodec;
 import io.netty.handler.codec.http.HttpServerUpgradeHandler;
+import io.netty.handler.codec.http.HttpServerUpgradeHandler.UpgradeCodecFactory;
 
 public class InitHTTP2ServerHandler extends ChannelInitializer<SocketChannel> {
-    private final HTTP2ServerBuilder builder;
-    protected final Factory<Void, HttpServerUpgradeHandler.UpgradeCodecFactory> upgradeCodecFFactory = new UpgradeCodecFFactory();
-    protected final Factory<Integer, SimpleChannelInboundHandler<HttpMessage>> simpleChannelFactory;
 
+    private final InboundHTTPHandler inboundHTTPHandler;
+    private final UpgradeCodecFactory http2UpgradeCodecFactory;
     public InitHTTP2ServerHandler(HTTP2ServerBuilder builder) {
-        this.builder = builder;
-        this.simpleChannelFactory = new SimpleChannelFactory();
+        this.inboundHTTPHandler = new InboundHTTPHandler(builder.getMaxContentLength());
+        this.http2UpgradeCodecFactory=new HTTP2UpgradeCodecFactory();
     }
 
     @Override
@@ -32,7 +28,7 @@ public class InitHTTP2ServerHandler extends ChannelInitializer<SocketChannel> {
         ChannelPipeline pipeline = socketChannel.pipeline();
         HttpServerCodec httpServerCodec = new HttpServerCodec();
         pipeline.addLast(httpServerCodec);
-        pipeline.addLast(new HttpServerUpgradeHandler(httpServerCodec, upgradeCodecFFactory.create()));
-        pipeline.addLast(simpleChannelFactory.create(builder.getMaxContentLength()));
+        pipeline.addLast(new HttpServerUpgradeHandler(httpServerCodec, http2UpgradeCodecFactory));
+        pipeline.addLast(inboundHTTPHandler);
     }
 }
